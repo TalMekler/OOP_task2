@@ -42,8 +42,41 @@ int	Bank::GetCode() const {
 	return m_bankCode;
 }
 
-void Bank::AddAccount(const Account& account);
+void Bank::AddAccount(const Account& account) {
+	Account** tmp = new Account * [m_numbeOfAccounts + 1];
+	int i, flag = 1;
+	for (i = 0; i < m_numbeOfAccounts; i++) {
+		if (account.GetAccountNumber() == tmp[i]->GetAccountNumber())
+			flag = 0;
+		tmp[i] = new Account(*m_account[i]);
+		DeleteAccount(*m_account[i]);
+	}
+	delete[] m_account;
+	if (flag) {
+		tmp[i] = new Account(account);
+		m_numbeOfAccounts++;
+	}
+	SetAccount(tmp, m_numbeOfAccounts);
+	for (i = 0; i < m_numbeOfAccounts; i++) {
+		delete tmp[i];
+	}
+	delete[] tmp;
+
+}
 void Bank::AddAccount(const Person& per, double amount);
 void Bank::AddPerson(const Person& newPerson, const Account& account, double amount);
-void Bank::DeleteAccount(const Account& account);
-void Bank::DeletePerson(const Person& p);
+void Bank::DeleteAccount(const Account& account) {
+	int i;
+	for (i = 0; i < m_numbeOfAccounts; i++) {
+		if (m_account[i]->GetAccountNumber() == account.GetAccountNumber()){
+			delete m_account[i];
+			return;
+		}
+	}
+}
+void Bank::DeletePerson(const Person& p) {
+	int i;
+	for (i = 0; i < m_numbeOfAccounts; i++) {
+		m_account[i]->DeletePerson(p);
+	}
+}
