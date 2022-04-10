@@ -117,6 +117,8 @@ void Account::DeletePerson(const Person& oldPerson) {
 	delete[] tmp;
 	if (flag)
 		m_totalPersons--;
+	if (m_totalPersons == 0)
+		delete[] m_persons;
 }
 void Account::AddTransaction(const Transaction& newTransaction) {
 	Transaction** tmp = new Transaction * [m_numberOfTransaction + 1];
