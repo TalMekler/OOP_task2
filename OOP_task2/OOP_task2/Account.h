@@ -9,7 +9,7 @@ class Transaction;
 class Account
 {
 public:
-	Account(); 
+	Account() : m_transactionList(nullptr), m_numberOfTransaction(0), m_persons(nullptr), m_totalPersons(0), m_accountNumber(0), m_balance(0) {};
 	Account( Person** persons, int count, double balance );
 	Account( const Person& person, double balance );
 	Account( const Account& other );

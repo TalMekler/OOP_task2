@@ -2,15 +2,28 @@
 
 Person::Person(const char* name, int id) {
 	m_id = id;
-	m_name = new char[strlen(name) + 1];
-	strcpy(m_name, name);
+	m_name = SetName(name)
 }
-Person::Person(const Person& other);
-Person::~Person();
+Person::Person(const Person& other) {
+	m_id = other.m_id;
+	SetName(other.m_name);
+}
+Person::~Person() {
+	delete[] m_name;
+}
 
-
-
-void Person::SetName(const char* newName);
-void Person::SetId(int newId);
-char* Person::GetName() const;
-int Person::GetId() const;
+void Person::SetName(const char* newName) {
+	if (m_name)
+		delete[] m_name;
+	m_name = new char[strlen(newName) + 1];
+	strcpy(m_name, newName);
+}
+void Person::SetId(int newId) {
+	m_id = newId;
+}
+char* Person::GetName() const {
+	return m_name;
+}
+int Person::GetId() const {
+	return m_id;
+}
