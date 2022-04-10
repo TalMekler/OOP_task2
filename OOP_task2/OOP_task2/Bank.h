@@ -6,7 +6,7 @@
 class Bank
 {
 public:
-	Bank();
+	Bank() : m_name(nullptr), m_account(nullptr), m_bankCode(0), m_numbeOfAccounts(0), m_totalBalance(0) {};
 	Bank( const char* name, int code );
 	~Bank();
 
@@ -35,4 +35,5 @@ private:
 	int			m_numbeOfAccounts;
 	double		m_totalBalance;
 };
+
 #endif // BANK_H
