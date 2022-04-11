@@ -1,6 +1,15 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Account.h"
 
+Account::Account() {
+	m_transactionList = nullptr;
+	m_numberOfTransaction = 0;
+	m_persons = nullptr;
+	m_totalPersons = 0;
+	m_accountNumber = 0;
+	m_balance = 0;
+}
+
 Account::Account(Person** persons, int count, double balance) {
 	// Ctor - list of persons
 	m_balance = balance;
