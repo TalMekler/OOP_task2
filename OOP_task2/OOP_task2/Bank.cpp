@@ -3,6 +3,8 @@
 Bank::Bank(const char* name, int code) {
 	m_bankCode = code;
 	SetBankName(name);
+	m_account = nullptr;
+	m_totalBalance = 0;
 }
 Bank::~Bank() {
 	for (int i = 0; i < m_numbeOfAccounts; i++) {
@@ -52,7 +54,7 @@ void Bank::AddAccount(const Account& account) {
 	Account** tmp = new Account * [m_numbeOfAccounts + 1];
 	int i, flag = 1;
 	for (i = 0; i < m_numbeOfAccounts; i++) {
-		if (account.GetAccountNumber() == tmp[i]->GetAccountNumber())
+		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber())
 			flag = 0;
 		tmp[i] = new Account(*m_account[i]);
 		DeleteAccount(*m_account[i]);
@@ -61,6 +63,7 @@ void Bank::AddAccount(const Account& account) {
 	if (flag) {
 		tmp[i] = new Account(account);
 		m_numbeOfAccounts++;
+		m_totalBalance += account.GetBalance();
 	}
 	SetAccount(tmp, m_numbeOfAccounts);
 	for (i = 0; i < m_numbeOfAccounts; i++) {

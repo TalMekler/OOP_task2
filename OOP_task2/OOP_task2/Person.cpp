@@ -14,8 +14,6 @@ Person::~Person() {
 }
 
 void Person::SetName(const char* newName) {
-	if (m_name)
-		delete[] m_name;
 	m_name = new char[strlen(newName) + 1];
 	strcpy(m_name, newName);
 }

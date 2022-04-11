@@ -12,11 +12,15 @@ Account::Account(const Person& person, double balance) {
 	m_balance = balance;
 	m_persons = new Person * [1];
 	m_persons[0] = new Person(person);
+	m_transactionList = nullptr;
+	m_numberOfTransaction = 0;
 }
 Account::Account(const Account& other) {
 	// Copy Ctor
-	SetTransactions(other.m_transactionList, other.m_numberOfTransaction);
-	SetPersons(other.m_persons, other.m_totalPersons);
+	if(other.m_transactionList)
+		SetTransactions(other.m_transactionList, other.m_numberOfTransaction);
+	if(other.m_persons)
+		SetPersons(other.m_persons, other.m_totalPersons);
 	m_accountNumber = other.m_accountNumber;
 	m_balance = other.m_balance;
 }
@@ -90,6 +94,7 @@ void Account::AddPerson(const Person& newPerson, double	amount) {
 		tmp[i] = new Person(newPerson);
 		m_totalPersons++;
 		m_persons = new Person * [m_totalPersons];
+		m_balance += amount;
 	}
 	for (i = 0; i < m_totalPersons; i++) {
 		m_persons[i] = new Person(*tmp[i]);
@@ -103,7 +108,8 @@ void Account::DeletePerson(const Person& oldPerson) {
 	for (i = 0; i < m_totalPersons; i++) {
 		if (tmp[i]->GetId() == oldPerson.GetId() && strcmp(tmp[i]->GetName(), oldPerson.GetName()) == 0) {
 			flag = 1;
-		}else 
+		}
+		else
 			tmp[i] = new Person(*m_persons[i]);
 	}
 	clearPersons();
