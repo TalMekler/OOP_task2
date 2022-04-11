@@ -22,8 +22,6 @@ void Transaction::SetAmount(double amount) {
 	m_amount = amount;
 }
 void Transaction::SetDate(const char* date) {
-	if (m_date)
-		delete[] m_date;
 	m_date = new char[strlen(date) + 1];
 	strcpy(m_date, date);
 }

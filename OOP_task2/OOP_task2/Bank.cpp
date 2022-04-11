@@ -25,8 +25,7 @@ void Bank::SetAccount(Account** account, int numbeOfAccounts) {
 	m_numbeOfAccounts = numbeOfAccounts;
 	int i;
 	for (i = 0; i < numbeOfAccounts; i++) {
-		//m_account[i] = new Account(*account[i]);
-		m_account[i] = account[i];
+		m_account[i] = new Account(*account[i]);
 	}
 }
 void Bank::SetTotal(double total) {
@@ -61,8 +60,7 @@ void Bank::AddAccount(const Account& account) {
 
 			flag = 0;
 		}
-		tmp[i] = m_account[i];
-		//tmp[i] = new Account(*m_account[i]);
+		tmp[i] = new Account(*m_account[i]);
 		//DeleteAccount(*m_account[i]);
 	}
 	delete[] m_account;

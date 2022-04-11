@@ -108,7 +108,7 @@ void Account::DeletePerson(const Person& oldPerson) {
 	Person** tmp = new Person * [m_totalPersons + 1];
 	int i, flag = 0;
 	for (i = 0; i < m_totalPersons; i++) {
-		if (tmp[i]->GetId() == oldPerson.GetId() && strcmp(tmp[i]->GetName(), oldPerson.GetName()) == 0) {
+		if (m_persons[i]->GetId() == oldPerson.GetId() && strcmp(m_persons[i]->GetName(), oldPerson.GetName()) == 0) {
 			flag = 1;
 		}
 		else
