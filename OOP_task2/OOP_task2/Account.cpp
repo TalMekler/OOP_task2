@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Account.h"
 
 Account::Account(Person** persons, int count, double balance) {
@@ -100,14 +101,15 @@ void Account::DeletePerson(const Person& oldPerson) {
 	Person** tmp = new Person * [m_totalPersons + 1];
 	int i, flag = 0;
 	for (i = 0; i < m_totalPersons; i++) {
-		tmp[i] = new Person(*m_persons[i]);
 		if (tmp[i]->GetId() == oldPerson.GetId() && strcmp(tmp[i]->GetName(), oldPerson.GetName()) == 0) {
 			flag = 1;
-		}
+		}else 
+			tmp[i] = new Person(*m_persons[i]);
 	}
 	clearPersons();
 	if (flag)
-		m_persons = new Person * [m_totalPersons - 1];
+		m_totalPersons--;
+	m_persons = new Person * [m_totalPersons];
 	for (i = 0; i < m_totalPersons; i++) {
 		if (tmp[i]->GetId() != oldPerson.GetId() && strcmp(tmp[i]->GetName(), oldPerson.GetName()) != 0) {
 			m_persons[i] = new Person(*tmp[i]);
@@ -115,8 +117,6 @@ void Account::DeletePerson(const Person& oldPerson) {
 		}
 	}
 	delete[] tmp;
-	if (flag)
-		m_totalPersons--;
 	if (m_totalPersons == 0)
 		delete[] m_persons;
 }

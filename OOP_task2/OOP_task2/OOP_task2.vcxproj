@@ -18,6 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Account.cpp" />
+    <ClCompile Include="Bank.cpp" />
+    <ClCompile Include="MainTrain.cpp" />
+    <ClCompile Include="Person.cpp" />
+    <ClCompile Include="Transaction.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Account.h" />
+    <ClInclude Include="Bank.h" />
+    <ClInclude Include="Person.h" />
+    <ClInclude Include="Transaction.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -138,19 +151,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\OOP_task2\Sources\Account.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\OOP_task2\Sources\Bank.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\OOP_task2\Sources\MainTrain.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\OOP_task2\Sources\Person.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\OOP_task2\Sources\Transaction.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\OOP_task2\Headers\Account.h" />
-    <ClInclude Include="..\..\..\..\..\..\OOP_task2\Headers\Bank.h" />
-    <ClInclude Include="..\..\..\..\..\..\OOP_task2\Headers\Person.h" />
-    <ClInclude Include="..\..\..\..\..\..\OOP_task2\Headers\Transaction.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

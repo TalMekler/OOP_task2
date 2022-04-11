@@ -1,0 +1,9 @@
+﻿  Account.cpp
+  Bank.cpp
+  MainTrain.cpp
+\\Mac\Home\Documents\OOP_task2\OOP_task2\OOP_task2\MainTrain.cpp(7,13): warning C4566: character represented by universal-character-name '\u200B' cannot be represented in the current code page (1252)
+\\Mac\Home\Documents\OOP_task2\OOP_task2\OOP_task2\MainTrain.cpp(15,38): warning C4566: character represented by universal-character-name '\u200B' cannot be represented in the current code page (1252)
+  Person.cpp
+  Transaction.cpp
+  Generating Code...
+  OOP_task2.vcxproj -> \\Mac\Home\Documents\OOP_task2\OOP_task2\Debug\OOP_task2.exe

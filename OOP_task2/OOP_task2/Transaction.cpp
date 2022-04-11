@@ -1,5 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Transaction.h"
-
 Transaction::Transaction(Account* s, Account* d, double amount, const char* date) {
 	m_source = s;
 	m_destination = d;

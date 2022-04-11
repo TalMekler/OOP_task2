@@ -1,10 +1,16 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Bank.h"
-
 Bank::Bank(const char* name, int code) {
 	m_bankCode = code;
 	SetBankName(name);
 }
-Bank::~Bank();
+Bank::~Bank() {
+	for (int i = 0; i < m_numbeOfAccounts; i++) {
+		DeleteAccount(*m_account[i]);
+	}
+	delete[] m_account;
+	delete[] m_name;
+}
 
 void Bank::SetBankName(const char* name) {
 	if (m_name)
@@ -63,8 +69,26 @@ void Bank::AddAccount(const Account& account) {
 	delete[] tmp;
 
 }
-void Bank::AddAccount(const Person& per, double amount);
-void Bank::AddPerson(const Person& newPerson, const Account& account, double amount);
+void Bank::AddAccount(const Person& per, double amount) {
+	Account newA(per, amount);
+	AddAccount(newA);
+}
+void Bank::AddPerson(const Person& newPerson, const Account& account, double amount) {
+	int flag = 1;
+	AddAccount(account);
+	for (int i = 0; i < m_numbeOfAccounts; i++) {
+		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber()) {
+			for (int j = 0; j < m_account[i]->GetTotalPersons(); j++) {
+				if (newPerson.GetId() == m_account[i]->GetPersons()[j]->GetId()) {
+					flag = 0;
+				}
+			}
+			if (flag) {
+				m_account[i]->AddPerson(newPerson,amount);
+			}
+		}
+	}
+}
 void Bank::DeleteAccount(const Account& account) {
 	int i;
 	for (i = 0; i < m_numbeOfAccounts; i++) {

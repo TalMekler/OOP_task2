@@ -1,8 +1,9 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Person.h"
 
 Person::Person(const char* name, int id) {
 	m_id = id;
-	m_name = SetName(name)
+	SetName(name);
 }
 Person::Person(const Person& other) {
 	m_id = other.m_id;
