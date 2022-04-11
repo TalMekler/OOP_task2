@@ -6,7 +6,7 @@
 class Bank
 {
 public:
-	Bank() : m_name(nullptr), m_account(nullptr), m_bankCode(0), m_numbeOfAccounts(0), m_totalBalance(0) {};
+	Bank();
 	Bank( const char* name, int code );
 	~Bank();
 

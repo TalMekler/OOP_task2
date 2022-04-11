@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "Transaction.h"
 Transaction::Transaction(Account* s, Account* d, double amount, const char* date) {
 	SetSource(s);
@@ -22,8 +21,12 @@ void Transaction::SetAmount(double amount) {
 	m_amount = amount;
 }
 void Transaction::SetDate(const char* date) {
+	int i;
 	m_date = new char[strlen(date) + 1];
-	strcpy(m_date, date);
+	for (i = 0; i < strlen(date); i++) {
+		m_date[i] = date[i];
+	}
+	m_date[i] = '\0';
 }
 Account* Transaction::GetSource() const {
 	return m_source;

@@ -1,5 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "Person.h"
+
+Person::Person(){
+	m_name = nullptr;
+	m_id = 0;
+}
 
 Person::Person(const char* name, int id) {
 	m_id = id;
@@ -14,8 +18,12 @@ Person::~Person() {
 }
 
 void Person::SetName(const char* newName) {
+	int i;
 	m_name = new char[strlen(newName) + 1];
-	strcpy(m_name, newName);
+	for (i = 0; i < strlen(newName); i++) {
+		m_name[i] = newName[i];
+	}
+	m_name[i] = '\0';
 }
 void Person::SetId(int newId) {
 	m_id = newId;

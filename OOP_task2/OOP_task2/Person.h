@@ -9,7 +9,7 @@ using namespace std;
 class Person
 {
 public:
-	Person() : m_name(nullptr), m_id(0) {};
+	Person();
 	Person(const char* name, int id);
 	Person(const Person& other);
 	~Person();

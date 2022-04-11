@@ -1,5 +1,13 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "Bank.h"
+
+Bank::Bank() {
+	m_name = nullptr;
+	m_account = nullptr;
+	m_bankCode = 0;
+	m_numbeOfAccounts = 0;
+	m_totalBalance = 0;
+}
+
 Bank::Bank(const char* name, int code) {
 	m_bankCode = code;
 	SetBankName(name);
@@ -15,10 +23,12 @@ Bank::~Bank() {
 }
 
 void Bank::SetBankName(const char* name) {
-	if (m_name)
-		delete[] m_name;
+	int i;
 	m_name = new char[strlen(name) + 1];
-	strcpy(m_name, name);
+	for (i = 0; i < strlen(name); i++) {
+		m_name[i] = name[i];
+	}
+	m_name[i] = '\0';
 }
 void Bank::SetAccount(Account** account, int numbeOfAccounts) {
 	m_account = new Account * [numbeOfAccounts];

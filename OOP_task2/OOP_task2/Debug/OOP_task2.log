@@ -1,9 +1,12 @@
 ﻿  Account.cpp
   Bank.cpp
+\\Mac\Home\Documents\OOP_task2\OOP_task2\OOP_task2\Bank.cpp(28,16): warning C4018: '<': signed/unsigned mismatch
   MainTrain.cpp
 \\Mac\Home\Documents\OOP_task2\OOP_task2\OOP_task2\MainTrain.cpp(7,12): warning C4566: character represented by universal-character-name '\u200B' cannot be represented in the current code page (1252)
 \\Mac\Home\Documents\OOP_task2\OOP_task2\OOP_task2\MainTrain.cpp(15,38): warning C4566: character represented by universal-character-name '\u200B' cannot be represented in the current code page (1252)
   Person.cpp
+\\Mac\Home\Documents\OOP_task2\OOP_task2\OOP_task2\Person.cpp(23,16): warning C4018: '<': signed/unsigned mismatch
   Transaction.cpp
+\\Mac\Home\Documents\OOP_task2\OOP_task2\OOP_task2\Transaction.cpp(26,16): warning C4018: '<': signed/unsigned mismatch
   Generating Code...
   OOP_task2.vcxproj -> \\Mac\Home\Documents\OOP_task2\OOP_task2\Debug\OOP_task2.exe
