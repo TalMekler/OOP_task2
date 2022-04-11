@@ -7,6 +7,10 @@ Account::Account(Person** persons, int count, double balance) {
 	SetPersons(persons, count);
 	m_transactionList = nullptr;
 	m_numberOfTransaction = 0;
+	m_accountNumber = 0;
+	for (int i = 0; i < m_totalPersons; i++) {
+		m_accountNumber += m_persons[i]->GetId();
+	}
 }
 Account::Account(const Person& person, double balance) {
 	// Ctor - 1 person
@@ -16,12 +20,16 @@ Account::Account(const Person& person, double balance) {
 	m_persons[0] = new Person(person);
 	m_transactionList = nullptr;
 	m_numberOfTransaction = 0;
+	m_accountNumber = 0;
+	for (int i = 0; i < m_totalPersons; i++) {
+		m_accountNumber += m_persons[i]->GetId();
+	}
 }
 Account::Account(const Account& other) {
 	// Copy Ctor
-	if(other.m_transactionList)
+	if (other.m_transactionList)
 		SetTransactions(other.m_transactionList, other.m_numberOfTransaction);
-	if(other.m_persons)
+	if (other.m_persons)
 		SetPersons(other.m_persons, other.m_totalPersons);
 	m_accountNumber = other.m_accountNumber;
 	m_balance = other.m_balance;

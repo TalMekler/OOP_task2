@@ -8,7 +8,7 @@ Bank::Bank(const char* name, int code) {
 }
 Bank::~Bank() {
 	for (int i = 0; i < m_numbeOfAccounts; i++) {
-		DeleteAccount(*m_account[i]);
+		delete m_account[i];
 	}
 	delete[] m_account;
 	delete[] m_name;
@@ -54,9 +54,7 @@ void Bank::AddAccount(const Account& account) {
 	Account** tmp = new Account * [m_numbeOfAccounts + 1];
 	int i, flag = 1;
 	for (i = 0; i < m_numbeOfAccounts; i++) {
-		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber() &&
-			account.GetBalance() == m_account[i]->GetBalance() &&
-			account.GetTotalPersons() == m_account[i]->GetTotalPersons()) {
+		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber()) {
 
 			flag = 0;
 		}
@@ -85,9 +83,7 @@ void Bank::AddPerson(const Person& newPerson, const Account& account, double amo
 	int flag = 1;
 	AddAccount(account);
 	for (int i = 0; i < m_numbeOfAccounts; i++) {
-		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber() &&
-			account.GetBalance() == m_account[i]->GetBalance() &&
-			account.GetTotalPersons() == m_account[i]->GetTotalPersons()) {
+		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber()) {
 			for (int j = 0; j < m_account[i]->GetTotalPersons(); j++) {
 				if (newPerson.GetId() == m_account[i]->GetPersons()[j]->GetId() &&
 					0 == strcmp(newPerson.GetName(), m_account[i]->GetPersons()[j]->GetName())) {
@@ -101,17 +97,32 @@ void Bank::AddPerson(const Person& newPerson, const Account& account, double amo
 	}
 }
 void Bank::DeleteAccount(const Account& account) {
-	int i;
+	Account** tmp = new Account * [m_numbeOfAccounts];
+	int i, flag = 0;
 	for (i = 0; i < m_numbeOfAccounts; i++) {
-		if (m_account[i]->GetAccountNumber() == account.GetAccountNumber()) {
+		if (m_account[i]->GetAccountNumber() != account.GetAccountNumber()) {
+			tmp[i] = new Account(*m_account[i]);
 			delete m_account[i];
-			return;
+		}
+		else {
+			flag = 1;
 		}
 	}
+	if (flag) {
+		m_numbeOfAccounts--;
+	}
+	SetAccount(tmp, m_numbeOfAccounts);
+	for (i = 0; i < m_numbeOfAccounts; i++) {
+		delete tmp[i];
+	}
+	delete[] tmp;
 }
 void Bank::DeletePerson(const Person& p) {
 	int i;
 	for (i = 0; i < m_numbeOfAccounts; i++) {
 		m_account[i]->DeletePerson(p);
+		if (m_account[i]->GetTotalPersons() == 0) {
+			DeleteAccount(*m_account[i]);
+		}
 	}
 }
