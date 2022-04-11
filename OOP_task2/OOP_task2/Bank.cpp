@@ -25,7 +25,8 @@ void Bank::SetAccount(Account** account, int numbeOfAccounts) {
 	m_numbeOfAccounts = numbeOfAccounts;
 	int i;
 	for (i = 0; i < numbeOfAccounts; i++) {
-		m_account[i] = new Account(*account[i]);
+		//m_account[i] = new Account(*account[i]);
+		m_account[i] = account[i];
 	}
 }
 void Bank::SetTotal(double total) {
@@ -54,10 +55,15 @@ void Bank::AddAccount(const Account& account) {
 	Account** tmp = new Account * [m_numbeOfAccounts + 1];
 	int i, flag = 1;
 	for (i = 0; i < m_numbeOfAccounts; i++) {
-		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber())
+		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber() &&
+			account.GetBalance() == m_account[i]->GetBalance() &&
+			account.GetTotalPersons() == m_account[i]->GetTotalPersons()) {
+
 			flag = 0;
-		tmp[i] = new Account(*m_account[i]);
-		DeleteAccount(*m_account[i]);
+		}
+		tmp[i] = m_account[i];
+		//tmp[i] = new Account(*m_account[i]);
+		//DeleteAccount(*m_account[i]);
 	}
 	delete[] m_account;
 	if (flag) {
@@ -73,21 +79,25 @@ void Bank::AddAccount(const Account& account) {
 
 }
 void Bank::AddAccount(const Person& per, double amount) {
-	Account newA(per, amount);
-	AddAccount(newA);
+	Account* newA = new Account(per, amount);
+	AddAccount(*newA);
+	delete newA;
 }
 void Bank::AddPerson(const Person& newPerson, const Account& account, double amount) {
 	int flag = 1;
 	AddAccount(account);
 	for (int i = 0; i < m_numbeOfAccounts; i++) {
-		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber()) {
+		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber() &&
+			account.GetBalance() == m_account[i]->GetBalance() &&
+			account.GetTotalPersons() == m_account[i]->GetTotalPersons()) {
 			for (int j = 0; j < m_account[i]->GetTotalPersons(); j++) {
-				if (newPerson.GetId() == m_account[i]->GetPersons()[j]->GetId()) {
+				if (newPerson.GetId() == m_account[i]->GetPersons()[j]->GetId() &&
+					0 == strcmp(newPerson.GetName(), m_account[i]->GetPersons()[j]->GetName())) {
 					flag = 0;
 				}
 			}
 			if (flag) {
-				m_account[i]->AddPerson(newPerson,amount);
+				m_account[i]->AddPerson(newPerson, amount);
 			}
 		}
 	}
@@ -95,7 +105,7 @@ void Bank::AddPerson(const Person& newPerson, const Account& account, double amo
 void Bank::DeleteAccount(const Account& account) {
 	int i;
 	for (i = 0; i < m_numbeOfAccounts; i++) {
-		if (m_account[i]->GetAccountNumber() == account.GetAccountNumber()){
+		if (m_account[i]->GetAccountNumber() == account.GetAccountNumber()) {
 			delete m_account[i];
 			return;
 		}

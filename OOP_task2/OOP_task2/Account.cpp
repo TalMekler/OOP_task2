@@ -5,6 +5,8 @@ Account::Account(Person** persons, int count, double balance) {
 	// Ctor - list of persons
 	m_balance = balance;
 	SetPersons(persons, count);
+	m_transactionList = nullptr;
+	m_numberOfTransaction = 0;
 }
 Account::Account(const Person& person, double balance) {
 	// Ctor - 1 person
