@@ -129,22 +129,55 @@ void Account::DeletePerson(const Person& oldPerson) {
 		delete[] m_persons;
 }
 void Account::AddTransaction(const Transaction& newTransaction) {
-	Transaction** tmp = new Transaction * [m_numberOfTransaction + 1];
+	//Transaction** tmp = new Transaction * [m_numberOfTransaction + 1];
+	//int i;
+	//// Copy transaction list to tmp list
+	//for (i = 0; i < m_numberOfTransaction; i++) {
+	//	tmp[i] = new Transaction(*m_transactionList[i]);
+	//}
+	//tmp[i] = new Transaction(newTransaction); // add the new transaction
+	//newTransaction.GetSource()->SetBalance(newTransaction.GetSource()->GetBalance() - newTransaction.GetAmount());
+	//newTransaction.GetDes()->SetBalance(newTransaction.GetDes()->GetBalance() + newTransaction.GetAmount());
+	//clearTransactions();
+	//// Copy the tmp list to the transactionList
+	//m_numberOfTransaction++;
+	//m_transactionList = new Transaction * [m_numberOfTransaction];
+	//for (i = 0; i < m_numberOfTransaction; i++) {
+	//	m_transactionList[i] = new Transaction(*tmp[i]);
+	//	delete tmp[i]; // delete tmp list
+	//}
+	//delete[] tmp;
+
 	int i;
-	// Copy transaction list to tmp list
-	for (i = 0; i < m_numberOfTransaction; i++) {
-		tmp[i] = new Transaction(*m_transactionList[i]);
+	Transaction** tmp = new Transaction * [newTransaction.GetSource()->GetNumOfTransactions() + 1];
+	for (i = 0; i < newTransaction.GetSource()->GetNumOfTransactions(); i++) {
+		tmp[i] = new Transaction(*newTransaction.GetSource()->GetTransactions()[i]);
 	}
 	tmp[i] = new Transaction(newTransaction); // add the new transaction
-	clearTransactions();
-	// Copy the tmp list to the transactionList
-	m_numberOfTransaction++;
-	m_transactionList = new Transaction * [m_numberOfTransaction];
+	newTransaction.GetSource()->clearTransactions();
+	newTransaction.GetSource()->SetTransactions(tmp, newTransaction.GetSource()->GetNumOfTransactions() + 1);
 	for (i = 0; i < m_numberOfTransaction; i++) {
 		m_transactionList[i] = new Transaction(*tmp[i]);
 		delete tmp[i]; // delete tmp list
 	}
+
+	// If source and destination are different add -> Add the transaction to the destination account
+	if (newTransaction.GetDes() != newTransaction.GetSource()) {
+		tmp = new Transaction * [newTransaction.GetDes()->GetNumOfTransactions() + 1];
+		for (i = 0; i < newTransaction.GetDes()->GetNumOfTransactions(); i++) {
+			tmp[i] = new Transaction(*newTransaction.GetDes()->GetTransactions()[i]);
+		}
+		tmp[i] = new Transaction(newTransaction); // add the new transaction
+		newTransaction.GetDes()->clearTransactions();
+		newTransaction.GetDes()->SetTransactions(tmp, newTransaction.GetDes()->GetNumOfTransactions() + 1);
+		for (i = 0; i < m_numberOfTransaction; i++) {
+			m_transactionList[i] = new Transaction(*tmp[i]);
+			delete tmp[i]; // delete tmp list
+		}
+	}
 	delete[] tmp;
+	newTransaction.GetSource()->SetBalance(newTransaction.GetSource()->GetBalance() - newTransaction.GetAmount());
+	newTransaction.GetDes()->SetBalance(newTransaction.GetDes()->GetBalance() + newTransaction.GetAmount());
 }
 
 void Account::clearTransactions() {
