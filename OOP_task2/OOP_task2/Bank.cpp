@@ -20,6 +20,7 @@ Bank::~Bank() {
 	}
 	delete[] m_account;
 	delete[] m_name;
+
 }
 
 void Bank::SetBankName(const char* name) {
