@@ -27,8 +27,4 @@ private:
 	char*		m_date;
 };
 
-
-
-
 #endif // ! TRANSACTION_H
-
