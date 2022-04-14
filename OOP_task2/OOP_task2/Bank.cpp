@@ -32,6 +32,13 @@ void Bank::SetBankName(const char* name) {
 	m_name[i] = '\0';
 }
 void Bank::SetAccount(Account** account, int numbeOfAccounts) {
+	if (m_numbeOfAccounts > 0) {
+		// Account arr member isn't empty -> CLEAR THE ARRAY
+		for (int i = 0; i < m_numbeOfAccounts; i++) {
+			delete m_account[i];
+		}
+		delete[] m_account;
+	}
 	m_account = new Account * [numbeOfAccounts];
 	m_numbeOfAccounts = numbeOfAccounts;
 	int i;
@@ -60,7 +67,6 @@ double Bank::GetTotal() const {
 int	Bank::GetCode() const {
 	return m_bankCode;
 }
-
 void Bank::AddAccount(const Account& account) {
 
 	for (int i = 0; i < m_numbeOfAccounts; i++) {
@@ -72,36 +78,13 @@ void Bank::AddAccount(const Account& account) {
 	Account** tmp = new Account * [m_numbeOfAccounts + 1];
 	for (int i = 0; i < m_numbeOfAccounts; i++) {
 		tmp[i] = new Account(*m_account[i]);
+		delete m_account[i];
 	}
 	tmp[m_numbeOfAccounts] = new Account(account); // Add the new account to the arr
 	delete[] m_account;
 	m_account = tmp;
 	m_numbeOfAccounts++;
 	m_totalBalance += account.GetBalance();
-
-
-
-	//int i, flag = 1;
-	//for (i = 0; i < m_numbeOfAccounts; i++) {
-	//	if (account.GetAccountNumber() == m_account[i]->GetAccountNumber()) {
-
-	//		flag = 0;
-	//	}
-	//	tmp[i] = new Account(*m_account[i]);
-	//	//DeleteAccount(*m_account[i]);
-	//}
-	//delete[] m_account;
-	//if (flag) {
-	//	tmp[i] = new Account(account);
-	//	m_numbeOfAccounts++;
-	//	m_totalBalance += account.GetBalance();
-	//}
-	//SetAccount(tmp, m_numbeOfAccounts);
-	//for (i = 0; i < m_numbeOfAccounts; i++) {
-	//	delete tmp[i];
-	//}
-	//delete[] tmp;
-
 }
 void Bank::AddAccount(const Person& per, double amount) {
 	Account* newA = new Account(per, amount);
@@ -113,38 +96,40 @@ void Bank::AddPerson(const Person& newPerson, const Account& account, double amo
 	AddAccount(account);
 	for (int i = 0; i < m_numbeOfAccounts; i++) {
 		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber()) {
+			// Found the account
 			for (int j = 0; j < m_account[i]->GetTotalPersons(); j++) {
-				if (newPerson.GetId() == m_account[i]->GetPersons()[j]->GetId() &&
-					0 == strcmp(newPerson.GetName(), m_account[i]->GetPersons()[j]->GetName())) {
-					flag = 0;
-				}
+				if (newPerson.GetId() == m_account[i]->GetPersons()[j]->GetId())
+					flag = 0; // Person in the account
 			}
 			if (flag) {
+				// Person not in the account -> ADD THE PERSON
 				m_account[i]->AddPerson(newPerson, amount);
 			}
 		}
 	}
 }
 void Bank::DeleteAccount(const Account& account) {
-	Account** tmp = new Account * [m_numbeOfAccounts];
-	int i, flag = 0;
-	for (i = 0; i < m_numbeOfAccounts; i++) {
+	int flag = 0;
+	for (int i = 0; i < m_numbeOfAccounts; i++) {
+		if (m_account[i]->GetAccountNumber() == account.GetAccountNumber())
+			flag = 1; // Account exist in the bank -> Delete the account
+	}
+
+	if (!flag) return; // Account isn't in the bank -> DO NOTHING
+
+	// Delete the account from the bank
+	Account** tmp = new Account * [m_numbeOfAccounts - 1];
+	int i, j;
+	for (i = 0, j = 0; i < m_numbeOfAccounts; i++) {
 		if (m_account[i]->GetAccountNumber() != account.GetAccountNumber()) {
-			tmp[i] = new Account(*m_account[i]);
-			delete m_account[i];
-		}
-		else {
-			flag = 1;
+			tmp[j] = new Account(*m_account[i]);
+			j++;
 		}
 	}
-	if (flag) {
-		m_numbeOfAccounts--;
-	}
-	SetAccount(tmp, m_numbeOfAccounts);
-	for (i = 0; i < m_numbeOfAccounts; i++) {
-		delete tmp[i];
-	}
-	delete[] tmp;
+	delete[] m_account;
+	m_account = tmp;
+	tmp = nullptr;
+	m_numbeOfAccounts--;
 }
 void Bank::DeletePerson(const Person& p) {
 	int i;
