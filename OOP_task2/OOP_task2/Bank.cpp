@@ -7,7 +7,6 @@ Bank::Bank() {
 	m_numbeOfAccounts = 0;
 	m_totalBalance = 0;
 }
-
 Bank::Bank(const char* name, int code) {
 	m_bankCode = code;
 	SetBankName(name);
@@ -22,7 +21,6 @@ Bank::~Bank() {
 	delete[] m_name;
 
 }
-
 void Bank::SetBankName(const char* name) {
 	int i;
 	m_name = new char[strlen(name) + 1];
