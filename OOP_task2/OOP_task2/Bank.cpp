@@ -62,27 +62,45 @@ int	Bank::GetCode() const {
 }
 
 void Bank::AddAccount(const Account& account) {
-	Account** tmp = new Account * [m_numbeOfAccounts + 1];
-	int i, flag = 1;
-	for (i = 0; i < m_numbeOfAccounts; i++) {
-		if (account.GetAccountNumber() == m_account[i]->GetAccountNumber()) {
 
-			flag = 0;
-		}
+	for (int i = 0; i < m_numbeOfAccounts; i++) {
+		if (m_account[i]->GetAccountNumber() == account.GetAccountNumber())
+			return; // Account is already in the bank -> DO NOTHING
+	}
+
+	// Account isn't in the bank -> Add the account
+	Account** tmp = new Account * [m_numbeOfAccounts + 1];
+	for (int i = 0; i < m_numbeOfAccounts; i++) {
 		tmp[i] = new Account(*m_account[i]);
-		//DeleteAccount(*m_account[i]);
 	}
+	tmp[m_numbeOfAccounts] = new Account(account); // Add the new account to the arr
 	delete[] m_account;
-	if (flag) {
-		tmp[i] = new Account(account);
-		m_numbeOfAccounts++;
-		m_totalBalance += account.GetBalance();
-	}
-	SetAccount(tmp, m_numbeOfAccounts);
-	for (i = 0; i < m_numbeOfAccounts; i++) {
-		delete tmp[i];
-	}
-	delete[] tmp;
+	m_account = tmp;
+	m_numbeOfAccounts++;
+	m_totalBalance += account.GetBalance();
+
+
+
+	//int i, flag = 1;
+	//for (i = 0; i < m_numbeOfAccounts; i++) {
+	//	if (account.GetAccountNumber() == m_account[i]->GetAccountNumber()) {
+
+	//		flag = 0;
+	//	}
+	//	tmp[i] = new Account(*m_account[i]);
+	//	//DeleteAccount(*m_account[i]);
+	//}
+	//delete[] m_account;
+	//if (flag) {
+	//	tmp[i] = new Account(account);
+	//	m_numbeOfAccounts++;
+	//	m_totalBalance += account.GetBalance();
+	//}
+	//SetAccount(tmp, m_numbeOfAccounts);
+	//for (i = 0; i < m_numbeOfAccounts; i++) {
+	//	delete tmp[i];
+	//}
+	//delete[] tmp;
 
 }
 void Bank::AddAccount(const Person& per, double amount) {
