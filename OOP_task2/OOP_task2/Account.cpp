@@ -101,52 +101,47 @@ void Account::Deposit(double amount, const char* date) {
 	m_balance += amount; // Update the balance
 }
 void Account::AddPerson(const Person& newPerson, double	amount) {
-	Person** tmp = new Person * [m_totalPersons + 1];
-	int i, flag = 1;
-	for (i = 0; i < m_totalPersons; i++) {
-		tmp[i] = new Person(*m_persons[i]);
-		if (tmp[i]->GetId() == newPerson.GetId() && strcmp(tmp[i]->GetName(), newPerson.GetName()) == 0) {
-			// Person in the account
-			flag = 0;
-		}
+	for (int i = 0; i < m_totalPersons; i++) {
+		if (newPerson.GetId() == m_persons[i]->GetId())
+			return; // newPerson exist in the account -> Do NOTHING
 	}
 
-	clearPersons();
-	if (flag) {
-		tmp[i] = new Person(newPerson);
-		m_totalPersons++;
-		m_persons = new Person * [m_totalPersons];
-		m_balance += amount;
-	}
+	// newPerson isn't in the account -> Add him
+	Person** tmp = new Person * [m_totalPersons + 1];
+	int i;
 	for (i = 0; i < m_totalPersons; i++) {
-		m_persons[i] = new Person(*tmp[i]);
-		delete tmp[i];
+		tmp[i] = new Person(*m_persons[i]);
 	}
-	delete[] tmp;
+	tmp[i] = new Person(newPerson);
+	clearPersons();
+	m_totalPersons++;
+	m_balance += amount;
+	m_persons = tmp; // tmp point to DMA
 }
 void Account::DeletePerson(const Person& oldPerson) {
-	Person** tmp = new Person * [m_totalPersons + 1];
-	int i, flag = 0;
-	for (i = 0; i < m_totalPersons; i++) {
-		if (m_persons[i]->GetId() == oldPerson.GetId() && strcmp(m_persons[i]->GetName(), oldPerson.GetName()) == 0) {
+	int flag = 0;
+	for (int i = 0; i < m_totalPersons; i++) {
+		if (oldPerson.GetId() == m_persons[i]->GetId()) {
+			// oldPerson in the bank
 			flag = 1;
+			break;
 		}
-		else
-			tmp[i] = new Person(*m_persons[i]);
+	}
+	if (!flag) return; // Person not in the bank -> Do NOTHING
+
+	// Person in the bank - delete him
+	Person** tmp = new Person * [m_totalPersons - 1];
+	int i, j;
+	for (i = 0, j = 0; i < m_totalPersons; i++) {
+		if (oldPerson.GetId() != m_persons[i]->GetId()) {
+			// Copy person to tmp arr if this isn't the person we want to delete
+			tmp[j] = new Person(*m_persons[i]);
+			j++;
+		}
 	}
 	clearPersons();
-	if (flag)
-		m_totalPersons--;
-	m_persons = new Person * [m_totalPersons];
-	for (i = 0; i < m_totalPersons; i++) {
-		if (tmp[i]->GetId() != oldPerson.GetId() && strcmp(tmp[i]->GetName(), oldPerson.GetName()) != 0) {
-			m_persons[i] = new Person(*tmp[i]);
-			delete tmp[i];
-		}
-	}
-	delete[] tmp;
-	if (m_totalPersons == 0)
-		delete[] m_persons;
+	m_totalPersons--;
+	m_persons = tmp;
 }
 void Account::AddTransaction(const Transaction& newTransaction) {
 	int i;
@@ -189,8 +184,10 @@ void Account::clearTransactions() {
 	delete[] m_transactionList;
 }
 void Account::clearPersons() {
-	for (int i = 0; i < m_totalPersons; i++) {
-		delete m_persons[i];
+	if (m_totalPersons > 0) {
+		for (int i = 0; i < m_totalPersons; i++) {
+			delete m_persons[i];
+		}
+		delete[] m_persons;
 	}
-	delete[] m_persons;
 }
