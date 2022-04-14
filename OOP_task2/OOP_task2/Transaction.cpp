@@ -1,3 +1,8 @@
+/*
+	Name: Tal Mekler
+	ID: 318811122
+*/
+
 #include "Transaction.h"
 Transaction::Transaction(Account* s, Account* d, double amount, const char* date) {
 	SetSource(s);

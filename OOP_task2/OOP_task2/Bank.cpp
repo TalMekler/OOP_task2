@@ -1,3 +1,8 @@
+/*
+	Name: Tal Mekler
+	ID: 318811122
+*/
+
 #include "Bank.h"
 
 Bank::Bank() {
