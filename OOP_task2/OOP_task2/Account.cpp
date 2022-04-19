@@ -6,9 +6,9 @@
 #include "Account.h"
 
 Account::Account() {
-	m_transactionList = NULL;
+	m_transactionList = nullptr;
 	m_numberOfTransaction = 0;
-	m_persons = NULL;
+	m_persons = nullptr;
 	m_totalPersons = 0;
 	m_accountNumber = 0;
 	m_balance = 0;
